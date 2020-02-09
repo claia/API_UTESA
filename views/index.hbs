@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+            <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="{{title}}">
+            {{title}}
+        </a>
+        <form class="form-inline">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">CERRAR SESIÓN</button>
+        </form>
+    </nav>
+
+
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-8 pt-4">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        ENVIAR UNA NOTIFICACIÓN
+                    </div>
+                    <div class="card-body">
+                        <form id="form" autocomplete="off">
+                            <div class="form-group">
+                                <label for="title">TITULO DE LA NOTIFICACION</label>
+                                <input class="form-control" type="text" id="title">
+                                <span class="help-block" style="font-size: xx-small;">SE RECOMIENTDA NO USAR MÁS DE 20
+                                    CARACTERES.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="body">DESCRIPCION DE LA NOTIFICACION</label>
+                                <textarea rows="5" class="form-control input-lg " type="text" id="body"></textarea>
+                            </div>
+                            <input class="btn btn-dark btn-sm" type="submit" value="ENVIAR NOTIFICACIÓN">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/axios.min.js"></script>
+    <script src="/javascripts/sendNotification.js"></script>
+</body>
+
+</html>

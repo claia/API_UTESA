@@ -1,0 +1,23 @@
+{
+  "name": "utesa-webservice",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Gabriel Minaya",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "hbs": "^4.1.0",
+    "helmet": "^3.21.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
