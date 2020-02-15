@@ -5,16 +5,15 @@
   "author": "Gabriel Minaya",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "start": "node ./src/index",
+    "dev": "nodemon ./src/index"
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "debug": "~2.6.9",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "~4.16.1",
-    "hbs": "^4.1.0",
     "helmet": "^3.21.2",
-    "http-errors": "~1.6.3",
     "morgan": "~1.9.1"
   },
   "devDependencies": {
