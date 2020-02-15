@@ -4,10 +4,11 @@ const app = require("./app");
 
 async function main() {
   try {
-    await http.createServer(app).listen(app.get("port"));
+    const server = await http.createServer(app);
+    server.listen(app.get("port"));
     console.log(`server on port: ${app.get("port")}`);
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err.toString());
   }
 }
 

@@ -1,25 +1,25 @@
 const axios = require("axios");
+const { validationResult } = require("express-validator");
 
 const notificationController = {
   sendNotification: async function(device, title, body) {
-    const options = {
-      method: "post",
-      url: "https://fcm.googleapis.com/fcm/send",
-      data: {
-        to: device,
-        notification: {
-          title: title,
-          body: body
-        }
-      },
-      headers: {
-        Authorization: process.env.FIREBASE_AUTH,
-        "Content-Type": "application/json"
-      }
-    };
-
-    console.log(options);
     try {
+      const options = {
+        method: "post",
+        url: "https://fcm.googleapis.com/fcm/send",
+        data: {
+          to: device,
+          notification: {
+            title: title,
+            body: body
+          }
+        },
+        headers: {
+          Authorization: process.env.FIREBASE_AUTH,
+          "Content-Type": "application/json"
+        }
+      };
+
       return await axios(options);
     } catch (err) {
       console.error(err);
@@ -28,22 +28,26 @@ const notificationController = {
   },
 
   sendNotificationBroadcast: function(req, res) {
-    const title = req.body.title;
-    const body = req.body.body;
-    const devices = [
-      "cdJSjP27UuM:APA91bGqctJMWrp9VO9HhHEftzb4COeq56M8TnTTmnHbyrF8NFw00BQ5iJeEiO4kF8b7ygeOftmZSTShyxxargK69zkSMlyAXotI5vaXQL1U15-QzvmYq6xnidyp_OtvIuCISjO0Jckk"
-    ];
-    if (!title) return res.status(500).json({ status: false });
-    if (!body) return res.status(500).json({ status: false });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
 
     try {
-      devices.forEach(token =>
-        notificationController.sendNotification(token, title, body)
-      );
-      res.status(200).json({ status: true });
+      const devices = [
+        "cdJSjP27UuM:APA91bGqctJMWrp9VO9HhHEftzb4COeq56M8TnTTmnHbyrF8NFw00BQ5iJeEiO4kF8b7ygeOftmZSTShyxxargK69zkSMlyAXotI5vaXQL1U15-QzvmYq6xnidyp_OtvIuCISjO0Jckk"
+      ];
+
+      devices.forEach(token => {
+        notificationController.sendNotification(
+          token,
+          req.body.title,
+          req.body.body
+        );
+      });
+      res.status(200).json({ status: true, body: resps });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ status: false });
+      res.status(500).json({ status: false, error: err.toString() });
     }
   }
 };
