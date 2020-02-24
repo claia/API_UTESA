@@ -11,7 +11,7 @@ module.exports = {
       return res.rows;
     } catch (err) {
       client.end();
-      return err;
+      throw err;
     }
   }
 };
