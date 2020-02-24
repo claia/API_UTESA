@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { validationResult } = require("express-validator");
+const db = require("../database");
 
 const notificationController = {
   sendNotification: async function(device, title, body) {
@@ -27,26 +28,32 @@ const notificationController = {
     }
   },
 
-  sendNotificationBroadcast: function(req, res) {
+  sendNotificationBroadcast: async function(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
 
     try {
-      const devices = [
-        "cdJSjP27UuM:APA91bGqctJMWrp9VO9HhHEftzb4COeq56M8TnTTmnHbyrF8NFw00BQ5iJeEiO4kF8b7ygeOftmZSTShyxxargK69zkSMlyAXotI5vaXQL1U15-QzvmYq6xnidyp_OtvIuCISjO0Jckk"
-      ];
+      const getDevicesQuery = `
+        SELECT token
+        FROM public.gadgets
+        WHERE notify = true;
+      `;
 
-      devices.forEach(token => {
+      const devices = await db.execQuery(getDevicesQuery);
+      console.log(devices);
+
+      devices.forEach(device => {
         notificationController.sendNotification(
-          token,
+          device.token,
           req.body.title,
           req.body.body
         );
       });
-      res.status(200).json({ status: true, body: resps });
+      res.status(200).json({ status: true });
     } catch (err) {
+      console.log(err.toString());
       res.status(500).json({ status: false, error: err.toString() });
     }
   }

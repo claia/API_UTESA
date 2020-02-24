@@ -36,25 +36,28 @@ const authController = {
 
       const studentQuery = `
         SELECT
-          us.id as userid,
-              s."studentsId" as studentsid,
-              e.firsname,
-              e.lastname,
-              en."name",
-              p.id as pensumid,
-              c."key",
-              c.title
-            FROM public.users as us
-          INNER JOIN
-            public.students as s ON us.id = s.id
-          INNER JOIN
-            public.entities as e ON e.id = s."entitiesId"
-          INNER JOIN
-            public.enclosures as en ON en.id = e."enclosuresId"
-          INNER JOIN
-            public."pensumHeaders" as p ON p.id = s."pensumHeadersId"
-          INNER JOIN
-            public.careers c ON c.id = p."careersId"
+        us.id as userid,
+        s."studentsId" as studentsid,
+        s."entitiesId" as entitieid,
+        e.firsname,
+        e.lastname,
+        en."name",
+        p.id as pensumid,
+        c."key",
+        c.title
+        FROM public.users as us
+        INNER JOIN
+        public.students as s ON us.id = s.id
+        INNER JOIN
+        public.entities as e ON e.id = s."entitiesId"
+        INNER JOIN
+        public.enclosures as en ON en.id = e."enclosuresId"
+        INNER JOIN
+        public."pensumHeaders" as p ON p.id = s."pensumHeadersId"
+        INNER JOIN
+        public.careers c ON c.id = p."careersId"
+        WHERE
+        s."studentsId" = ${studentid}
       `;
 
       const studentData = await db.execQuery(studentQuery);
@@ -78,23 +81,34 @@ const authController = {
       const { userid, deviceid } = req.body;
 
       const getDeviceIdQuery = `
-        SELECT g.id 
+        SELECT g."usersId" as usersid 
         FROM public.gadgets as g
-        WHERE token = '${deviceId}'
+        WHERE g.token = '${deviceid}'
       `;
 
       const insertDeviceIdQuery = `
         INSERT INTO public.gadgets("usersId", token, notify)
-        VALUES (${userid}, '${deviceId}', true)
+        VALUES (${userid}, '${deviceid}', true)
       `;
 
       const devices = await db.execQuery(getDeviceIdQuery);
 
       if (!devices.length > 0) await db.execQuery(insertDeviceIdQuery);
+      else {
+        const updateDeviceIdQuery = `
+          UPDATE public.gadgets
+          SET "usersId"= ${userid}
+          WHERE "usersId" = ${devices[0].usersid};
+        `;
+
+        console.log(devices[0].usersid);
+
+        await db.execQuery(updateDeviceIdQuery);
+      }
 
       res.status(200).json({ status: true });
-    } catch (error) {
-      print(err);
+    } catch (err) {
+      console.log(err);
       return res.status(500).json({ status: false });
     }
   }
