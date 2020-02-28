@@ -38,7 +38,7 @@ const authController = {
         SELECT
         us.id as userid,
         s."studentsId" as studentsid,
-        s."entitiesId" as entitieid,
+        s.id as studentid,
         e.firsname,
         e.lastname,
         en."name",
@@ -100,8 +100,6 @@ const authController = {
           SET "usersId"= ${userid}
           WHERE "usersId" = ${devices[0].usersid};
         `;
-
-        console.log(devices[0].usersid);
 
         await db.execQuery(updateDeviceIdQuery);
       }

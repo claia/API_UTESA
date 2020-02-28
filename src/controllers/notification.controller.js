@@ -42,7 +42,6 @@ const notificationController = {
       `;
 
       const devices = await db.execQuery(getDevicesQuery);
-      console.log(devices);
 
       devices.forEach(device => {
         notificationController.sendNotification(
