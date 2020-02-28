@@ -39,7 +39,7 @@ const authController = {
         us.id as userid,
         s."studentsId" as studentsid,
         s.id as studentid,
-        e.firsname,
+        e.firstname,
         e.lastname,
         en."name",
         p.id as pensumid,
