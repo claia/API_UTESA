@@ -2,7 +2,7 @@ const { Client } = require("pg");
 
 module.exports = {
   execQuery: async function(query) {
-    const client = new Client();
+    const client = new Client({ ssl: { rejectUnauthorized: false } });
 
     try {
       await client.connect();
