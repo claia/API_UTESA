@@ -25,12 +25,16 @@ const getDocumentsByUserId = async (req, res) => {
 
     const query = `
       SELECT
-        requests."userId",
-        documents.description
-      FROM requests
-      INNER JOIN "documentRequest" ON requests.id = "documentRequest"."requestId"
-      INNER JOIN documents ON documents.id  = "documentRequest"."documentId"
-      WHERE requests."userId" = ${id}
+        r."emissionDate",
+        rS.description,
+        d.description,
+        Dt.name
+      FROM "documentRequest" as dR
+      INNER JOIN documents d on dR."documentId" = d.id
+      INNER JOIN requests r on dR."requestId" = r.id
+      INNER JOIN "requestStatus" rS on r."requestStatusId" = rS.id
+      INNER JOIN "documentTypes" dT on d."documentTypeId" = dT.id
+      WHERE r."userId" = ${id}
     `;
 
     const data = await db.execQuery(query);
