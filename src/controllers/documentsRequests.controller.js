@@ -26,6 +26,7 @@ const getDocumentsByUserId = async (req, res) => {
     const query = `
       SELECT
         r."emissionDate",
+        rS.id as estado_code,
         rS.description as estado,
         d.description,
         Dt.name as tipo
