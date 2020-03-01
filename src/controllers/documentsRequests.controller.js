@@ -26,9 +26,9 @@ const getDocumentsByUserId = async (req, res) => {
     const query = `
       SELECT
         r."emissionDate",
-        rS.description,
+        rS.description as estado,
         d.description,
-        Dt.name
+        Dt.name as tipo
       FROM "documentRequest" as dR
       INNER JOIN documents d on dR."documentId" = d.id
       INNER JOIN requests r on dR."requestId" = r.id
