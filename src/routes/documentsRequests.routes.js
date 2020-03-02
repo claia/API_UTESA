@@ -7,13 +7,23 @@ const router = Router();
 const documentsRequestsController = require("../controllers/documentsRequests.controller");
 
 router.get("/documents", documentsRequestsController.getDocuments);
+router.put(
+  "/",
+  [check("requestid").notEmpty()],
+  documentsRequestsController.updateRequestStatus
+);
+router.delete(
+  "/",
+  [check("requestid").notEmpty()],
+  documentsRequestsController.cancelRequest
+);
 router.get(
   "/documents/:id",
   [param("id").notEmpty()],
   documentsRequestsController.getDocumentsByUserId
 );
 router.post(
-  "/create",
+  "/",
   [
     check("userid").notEmpty(),
     check("documentid").notEmpty(),
