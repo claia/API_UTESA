@@ -32,7 +32,7 @@ const getDocumentsByUserId = async (req, res) => {
         rS.id as estado_code,
         rS.description as estado,
         d.description,
-        Dt.name as tipo,
+        dT.name as tipo,
         dR.image as image
       FROM "documentRequest" as dR
       INNER JOIN documents d on dR."documentId" = d.id
