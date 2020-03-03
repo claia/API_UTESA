@@ -29,6 +29,13 @@ const login = async function(req, res) {
 
     const studentData = await db.execQuery(studentQuery);
 
+    const studentQualificationQuery = `select * from "getQualificationByCycle"(${studentData[0].studentid},(SELECT c.id FROM public.cycles as c ORDER BY  c.id DESC LIMIT 1));`;
+    const studentQualificationData = await db.execQuery(
+      studentQualificationQuery
+    );
+
+    studentData[0].qualification = studentQualificationData;
+
     const token = sign(studentData[0], process.env.privateKey, {
       expiresIn: "28d"
     });
