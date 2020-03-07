@@ -7,7 +7,7 @@ const router = Router();
 const checkQualificationRequestController = require("../controllers/qualificationRequests.controllers");
 
 router.get(
-  "/documents",
+  "/documents/:id",
   [check("userid").notEmpty()],
   checkQualificationRequestController.getRequest
 );
