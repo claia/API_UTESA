@@ -1,4 +1,4 @@
-const { param, check } = require("express-validator");
+const { check } = require("express-validator");
 const { Router } = require("express");
 // const { verifyToken } = require("../middlewares/tokenVerify");
 const router = Router();
@@ -7,9 +7,15 @@ const router = Router();
 const checkQualificationRequestController = require("../controllers/qualificationRequests.controllers");
 
 router.get(
-  "/documents/:id",
+  "/requests/:userid",
   [check("userid").notEmpty()],
   checkQualificationRequestController.getRequest
+);
+
+router.get(
+  "/groups/:studentid",
+  [check("studentid").notEmpty()],
+  checkQualificationRequestController.getGroupByStudentId
 );
 
 router.delete(

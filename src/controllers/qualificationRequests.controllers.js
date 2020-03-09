@@ -13,7 +13,10 @@ const getRequest = async (req, res) => {
 
     const query = `
       SELECT
-      s.key || s.name || g.sequence as grupo,
+      r.id as requestid,
+      s.key || g.sequence as grupo,
+      s.name as asignatura,
+      rS.id as estado_code,
       e.firstname || ' ' || e.lastname as profesor,
       c.sequence::text||c.year::text as ciclo,
       rS.description as estado
@@ -27,13 +30,46 @@ const getRequest = async (req, res) => {
       INNER JOIN students s2 on ch."studentId" = s2.id
       INNER JOIN entities e on t."entitiesId" = e.id
       INNER JOIN "requestStatus" rS on r."requestStatusId" = rS.id
-      WHERE s2."studentsId" = ${userid}
+      WHERE r."userId" = ${userid}
+      AND  r."requestStatusId" <> 4
     `;
 
     const data = await db.execQuery(query);
 
     res.status(200).json(data);
   } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({ error: err.toString() });
+  }
+};
+
+const getGroupByStudentId = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  try {
+    const { studentid } = req.params;
+
+    const query = `
+      SELECT
+      g.id as groupid,
+      s.key || g.sequence as grupo,
+      s.name
+      FROM groups AS g
+      INNER JOIN "studentsGroups" sG on g.id = sG."groupsId"
+      INNER JOIN subjects s on g."subjectsId" = s.id
+      WHERE g."cyclesId" = (SELECT c.id FROM public.cycles as c ORDER BY  c.id DESC LIMIT 1)
+      AND sG."studentsId" = ${studentid};
+    `;
+
+    const data = await db.execQuery(query);
+
+    res.status(200).json(data);
+  } catch (error) {
     console.log(err);
 
     return res.status(500).json({ error: err.toString() });
@@ -87,5 +123,6 @@ const cancelRequest = async (req, res) => {
 module.exports = {
   getRequest,
   createRequest,
-  cancelRequest
+  cancelRequest,
+  getGroupByStudentId
 };
