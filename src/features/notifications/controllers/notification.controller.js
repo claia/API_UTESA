@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { validationResult } = require("express-validator");
-const db = require("../database");
+const db = require("../../../core/database");
 
 const sendNotification = async function(device, title, body) {
   try {

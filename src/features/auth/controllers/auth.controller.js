@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const { sign } = require("jsonwebtoken");
 const { compareSync } = require("bcrypt");
-const db = require("../database");
+const db = require("../../../core/database");
 
 const login = async function(req, res) {
   const errors = validationResult(req);

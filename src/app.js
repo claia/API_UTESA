@@ -15,14 +15,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-/* Routes */
-app.use("/api/auth", require("./routes/auth.routes"));
-app.use("/api/documentsRequests", require("./routes/documentsRequests.routes"));
-app.use(
-  "/api/checkQualificationRequests",
-  require("./routes/qualificationRequest.routes")
-);
-app.use("/api/notification", require("./routes/notification.routes"));
-app.use("/api/groups", require("./routes/groups.routes"));
-app.use("*", (req, res) => res.status(404).json({ error: "route not exist." }));
+/* feactures */
+app.use("/api", require("./features"));
+
 module.exports = app;

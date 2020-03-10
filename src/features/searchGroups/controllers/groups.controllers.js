@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const db = require("../database");
+const db = require("../../../core/database");
 
 const getGroups = async (req, res) => {
   const errors = validationResult(req);

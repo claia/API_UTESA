@@ -5,8 +5,8 @@
   "author": "Gabriel Minaya",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "node ./src/index",
-    "dev": "nodemon ./src/index"
+    "start": "node ./index",
+    "dev": "nodemon ./index"
   },
   "dependencies": {
     "axios": "^0.19.2",
