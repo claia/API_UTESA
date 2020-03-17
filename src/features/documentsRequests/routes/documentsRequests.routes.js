@@ -18,8 +18,8 @@ router.delete(
   documentsRequestsController.cancelRequest
 );
 router.get(
-  "/documents/:id",
-  [param("id").notEmpty()],
+  "/documents/all",
+  [check("id").notEmpty(), check("status").notEmpty()],
   documentsRequestsController.getDocumentsByUserId
 );
 router.post(
